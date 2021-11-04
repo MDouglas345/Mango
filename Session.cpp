@@ -2,18 +2,14 @@
 
 void Session::HandleRead(){
   auto self(shared_from_this());
-  socket.async_read_some(asio::buffer(ReadBuffer, sizeof(MInterface)),
+  socket.async_read_some(asio::buffer(ReadBuffer, ReadBufferSize),
       [this, self](std::error_code ec, std::size_t length)
       {
         if (!ec)
         {
-          MInterface *Message = (MInterface*)&ReadBuffer;
-          switch (Message->type){
-            case 0:
-              std::cout << "User chose 0\n";break;
-            case 1:
-              std::cout << "User chose 1\n";break;
-          }
+          MAuthenticate* Auth = (MAuthenticate*)&ReadBuffer;
+
+          std::cout << Auth->User << " " << Auth->Password << "\n";
         }
       });
 }

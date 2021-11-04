@@ -9,7 +9,7 @@ void Server::Write(char* Buffer, size_t len){
 }
 
 void Server::Handle(){
-  std::cout << "Handling..\n";
+
 
   acceptor.async_accept(socket,
       [this](std::error_code ec)
@@ -22,8 +22,6 @@ void Server::Handle(){
 
         Handle();
       });
-      
-  std::cout << "Finished Handling\n";
 }
 
 
@@ -36,19 +34,28 @@ void Client::Write(char* Buffer, size_t len){
 }
 
 void Client::Handle(){
-  char c;
-  int cc;
-  std::cout << "enter 0 or 1\n";
-  std::cin >> c;
+  std::cout << std::string(50, '\n'); // clear the screen
 
-  cc = std::atoi(&c);
+  std::cout << "------------------Welcome to Mango---------------------\n";
+  std::cout << "------------------A Private Server---------------------\n";
+  std ::cout << std::string(3,'\n');
+  std::cout << "username: ";
+  std::string user, pass;
+  std::cin >> user;
+  std::cout << "password: ";
+  std::cin >> pass;
 
-  MInterface S;
-  S.type = cc;
 
-  std::memcpy(WriteBuffer, &S, sizeof(S));
+  MAuthenticate Auth;
+  memcpy(Auth.User,user.c_str(), user.length()+1);
+  memcpy(Auth.Password, pass.c_str(), pass.length()+1);
 
-  asio::write(socket, asio::buffer(WriteBuffer, sizeof(S)));
+  std::cout << Auth.User << " " << Auth.Password << "\n";
+
+
+  std::memcpy(WriteBuffer, &Auth, sizeof(Auth));
+
+  asio::write(socket, asio::buffer(WriteBuffer, sizeof(Auth)));
 
 
 }
