@@ -4,8 +4,10 @@
 #include <asio.hpp>
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
 #include "Session.h"
+#include "ServerData.h"
 
 class Mode{
 protected:
@@ -21,11 +23,13 @@ public:
 class Server : public Mode{
 private:
   asio::ip::tcp::acceptor acceptor;
+  std::vector<client_login_data> LoginTable;
 public:
-  Server(asio::io_context& c, short port) : Mode(c), acceptor(c, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)){std::cout << "Created Server\n"; Handle();}
+  Server(asio::io_context& c, short port) : Mode(c), acceptor(c, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)){std::cout << "Created Server\n"; Init();Handle();}
   void Write(char* Message, size_t len) override;
   void Read(char* Buffer, size_t len) override;
   void Handle() override;
+  void Init();
 };
 
 

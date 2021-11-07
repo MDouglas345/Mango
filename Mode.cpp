@@ -24,6 +24,11 @@ void Server::Handle(){
       });
 }
 
+void Server::Init(){
+  //TODO Read all table data files and put into memory
+
+  //TODO Whatever other data needs to intalized?
+}
 
 void Client::Read(char* Buffer, size_t len){
 
